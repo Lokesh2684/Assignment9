@@ -63,3 +63,4 @@ variable "client_secret" {
 variable "tenant_id" {
   type = string
 }
+
