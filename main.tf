@@ -11,17 +11,16 @@ module "sql_server" {
   source              = "./modules/sql_server"
   resource_group_name = var.resource_group_name
   location            = var.location
-  sql_admin_username  = var.sql_admin_username       # <-- use consistent name
+  sql_admin_username  = var.sql_admin_username
   sql_admin_password  = var.sql_admin_password
-  server_name         = var.sql_server_name          # <-- pass from tfvars
+  sql_server_name     = var.sql_server_name
 }
 
 module "sql_database" {
   source              = "./modules/sql_database"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = var.location
-  server_name         = module.sql_server.name
-  database_name       = var.sql_database_name
+  resource_group_name = var.resource_group_name
+  sql_server_name     = var.sql_server_name
+  sql_database_name   = var.sql_database_name
 }
 
 module "linux_vm" {
@@ -29,11 +28,9 @@ module "linux_vm" {
   count               = 2
   resource_group_name = var.resource_group_name
   location            = var.location
-  vm_name             = "${var.prefix}-vm-${count.index}"
-  admin_username      = var.vm_admin_username       # <-- match tfvars
-  admin_password      = var.vm_admin_password
-  ssh_public_key      = var.ssh_public_key
+  prefix              = var.prefix
   vm_size             = var.vm_size
+  admin_username      = var.admin_username
+  ssh_public_key      = var.ssh_public_key
+  admin_password      = var.admin_password
 }
-
-
