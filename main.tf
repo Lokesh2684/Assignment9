@@ -7,11 +7,6 @@ provider "azurerm" {
   tenant_id       = var.tenant_id
 }
 
-resource "azurerm_resource_group" "main" {
-  name     = var.resource_group_name
-  location = var.location
-}
-
 module "sql_server" {
   source              = "./modules/sql_server"
   resource_group_name = var.resource_group_name
@@ -24,8 +19,8 @@ module "sql_server" {
 module "sql_database" {
   source              = "./modules/sql_database"
   resource_group_name = var.resource_group_name
-  sql_server_name     = var.sql_server_name
-  sql_database_name   = var.sql_database_name
+  server_name         = var.sql_server_name
+  database_name       = var.sql_database_name
 }
 
 module "linux_vm" {
